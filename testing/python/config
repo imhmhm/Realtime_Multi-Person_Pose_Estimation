@@ -7,7 +7,7 @@ use_gpu = 1
 GPUdeviceNumber = 0
 
 # Select model (default: 1)
-modelID = 1
+modelID = 2
 
 # Look in matlab counterpart for explanation
 octave = 3
@@ -28,9 +28,34 @@ bbox_ratio = 0.25
 [[1]]
 caffemodel = '../../model/_trained_COCO/pose_iter_440000.caffemodel'
 deployFile = '../../model/_trained_COCO/pose_deploy.prototxt'
+
+#caffemodel = '../../model/_body_25/pose_iter_584000.caffemodel'
+#deployFile = '../../model/_body_25/pose_deploy.prototxt'
+
+#caffemodel = '../../model/_trained_MPI/pose_iter_146000.caffemodel'
+#deployFile = '../../model/_trained_MPI/pose_deploy.prototxt'
+
 description = 'COCO Pose56 Two-level Linevec'
 boxsize = 368
 padValue = 128
 np = 12
 stride = 8
 part_str = [nose, neck, Rsho, Relb, Rwri, Lsho, Lelb, Lwri, Rhip, Rkne, Rank, Lhip, Lkne, Lank, Leye, Reye, Lear, Rear, pt19]
+
+
+[[2]]
+#caffemodel = '../../model/_trained_COCO/pose_iter_440000.caffemodel'
+#deployFile = '../../model/_trained_COCO/pose_deploy.prototxt'
+
+caffemodel = '../../model/_body_25/pose_iter_584000.caffemodel'
+deployFile = '../../model/_body_25/pose_deploy.prototxt'
+
+#caffemodel = '../../model/_trained_MPI/pose_iter_146000.caffemodel'
+#deployFile = '../../model/_trained_MPI/pose_deploy.prototxt'
+
+description = 'COCO Pose56 Two-level Linevec'
+boxsize = 368
+padValue = 128
+np = 12
+stride = 8
+part_str = [nose, neck, Rsho, Relb, Rwri, Lsho, Lelb, Lwri, Mhip, Rhip, Rkne, Rank, Lhip, Lkne, Lank, Reye, Leye, Rear, Lear, LBigToe, LSmallToe, LHeel, RBigToe, RSmallToe, RHeel, Background]
