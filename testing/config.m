@@ -41,7 +41,7 @@ param.merge = 'avg';
 
 
 % path of your caffe
-caffepath = '/home/zhecao/caffe/matlab';
+caffepath = '/home/hmhm/caffe/matlab';
 
 %COCO parameter
 if id == 1

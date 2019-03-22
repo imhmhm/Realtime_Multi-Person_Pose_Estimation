@@ -29,9 +29,9 @@ save_path = folder_name.replace('image', 'pose')
 if not os.path.exists(save_path):
     os.mkdir(save_path)
 
-image_list = sorted(glob.glob(os.path.join(folder_name, '*' + folder_image_suffix)))
+image_list = sorted(glob.glob(os.path.join(folder_name, '518*' + folder_image_suffix)))
 
-for test_image in image_list[404:]:
+for test_image in image_list:
     
     #test_image = '../sample_image/ski.jpg'
     # test_image = '../sample_image/686_0.png'
@@ -66,14 +66,14 @@ for test_image in image_list[404:]:
     paf_avg = np.zeros((oriImg.shape[0], oriImg.shape[1], 52))
     # first figure shows padded images
 
-#    f, axarr = plt.subplots(1, len(multiplier))
-#    f.set_size_inches((20, 5))
-#    # second figure shows heatmaps
-#    f2, axarr2 = plt.subplots(1, len(multiplier))
-#    f2.set_size_inches((20, 5))
-#    # third figure shows PAFs
-#    f3, axarr3 = plt.subplots(2, len(multiplier))
-#    f3.set_size_inches((20, 10))
+    f, axarr = plt.subplots(1, len(multiplier))
+    f.set_size_inches((20, 5))
+    # second figure shows heatmaps
+    f2, axarr2 = plt.subplots(1, len(multiplier))
+    f2.set_size_inches((20, 5))
+    # third figure shows PAFs
+    f3, axarr3 = plt.subplots(2, len(multiplier))
+    f3.set_size_inches((20, 10))
 
     
     for m in range(len(multiplier)):
@@ -146,14 +146,14 @@ for test_image in image_list[404:]:
     
     
 
-#    plt.imshow(oriImg[:,:,[2,1,0]])
-#    plt.imshow(heatmap_avg[:,:,2], alpha=.5)
-#    fig = matplotlib.pyplot.gcf()
-#    cax = matplotlib.pyplot.gca()
-#    fig.set_size_inches(20, 20)
-#    fig.subplots_adjust(right=0.93)
-#    cbar_ax = fig.add_axes([0.95, 0.15, 0.01, 0.7])
-#    _ = fig.colorbar(ax2, cax=cbar_ax)
+    plt.imshow(oriImg[:,:,[2,1,0]])
+    plt.imshow(heatmap_avg[:,:,7], alpha=.5)
+    fig = matplotlib.pyplot.gcf()
+    cax = matplotlib.pyplot.gca()
+    fig.set_size_inches(20, 20)
+    fig.subplots_adjust(right=0.93)
+    cbar_ax = fig.add_axes([0.95, 0.15, 0.01, 0.7])
+    _ = fig.colorbar(ax2, cax=cbar_ax)
 
     
     
@@ -362,18 +362,34 @@ for test_image in image_list[404:]:
     canvas = cv.imread(test_image) # B,G,R order
      
     #toe_pos = [0, 0]
-    for i in range(25):
-        rgba = np.array(cmap(1 - i/18. - 1./36))
-        rgba[0:3] *= 255
-        for j in range(len(all_peaks[i])):
-     #        toe_pos[0] += all_peaks[i][j][0] 
-     #        toe_pos[1] += all_peaks[i][j][1] 
-            cv.circle(canvas, all_peaks[i][j][0:2], 4, colors[i], thickness=-1)
-     #toe_pos[0] = toe_pos[0] / 2
-     #toe_pos[1] = toe_pos[1] / 2
-     #toe_pos = tuple(toe_pos)
-     #cv.circle(canvas, toe_pos, 4, colors[i], thickness=-1)
-     
+#    for i in range(25):
+#        rgba = np.array(cmap(1 - i/18. - 1./36))
+#        rgba[0:3] *= 255
+#        for j in range(len(all_peaks[i])):
+#    #        toe_pos[0] += all_peaks[i][j][0] 
+#    #        toe_pos[1] += all_peaks[i][j][1] 
+#            cv.circle(canvas, all_peaks[i][j][0:2], 4, colors[i], thickness=-1)
+#    #toe_pos[0] = toe_pos[0] / 2
+#    #toe_pos[1] = toe_pos[1] / 2
+#    #toe_pos = tuple(toe_pos)
+#    #cv.circle(canvas, toe_pos, 4, colors[i], thickness=-1)
+##    num_parts = 0
+##    choice = 0
+##    for i in range(len(subset)):
+##        num_parts_max = subset[i][-1]
+##        if num_parts_max > num_parts:
+##            choice = i
+##            num_parts = num_parts_max
+##    
+##    for i, idx in enumerate(subset[choice][0:25]):    
+##        rgba = np.array(cmap(1 - i/18. - 1./36))
+##        rgba[0:3] *= 255
+##        if idx == -1:
+##            continue
+##        for j in range(len(all_peaks[i])): 
+##            if all_peaks[i][j][3] == idx:
+##                cv.circle(canvas, all_peaks[i][j][0:2], 4, colors[i], thickness=-1)
+#    
 #    to_plot = cv.addWeighted(oriImg, 0.3, canvas, 0.7, 0)
 #    plt.imshow(to_plot[:,:,[2,1,0]])
 #    fig = matplotlib.pyplot.gcf()
@@ -408,21 +424,34 @@ for test_image in image_list[404:]:
             canvas = cv.addWeighted(canvas, 0.4, cur_canvas, 0.6, 0)
             
 
-#    plt.imshow(canvas[:,:,[2,1,0]])
-#    fig = matplotlib.pyplot.gcf()
-#    fig.set_size_inches(12, 12)
+    plt.imshow(canvas[:,:,[2,1,0]])
+    fig = matplotlib.pyplot.gcf()
+    fig.set_size_inches(12, 12)
 
     
     
     # In[ ]:
     
-    pose = np.zeros((3,25))
-    for i in range(25):
-        for j in range(len(all_peaks[i])):
-            
-            pose[0, i] = all_peaks[i][0][0]
-            pose[1, i] = all_peaks[i][0][1]
-            pose[2, i] = all_peaks[i][0][2]
+    pose = -1 * np.ones((3,25))
+    
+    num_parts = 0
+    choice = 0
+    for i in range(len(subset)):
+        num_parts_max = subset[i][-1]
+        if num_parts_max > num_parts:
+            choice = i
+            num_parts = num_parts_max
+    
+    for i, idx in enumerate(subset[choice][0:25]):    
+        rgba = np.array(cmap(1 - i/18. - 1./36))
+        rgba[0:3] *= 255
+        if idx == -1:
+            continue
+        for j in range(len(all_peaks[i])): 
+            if all_peaks[i][j][3] == idx:
+                pose[0, i] = all_peaks[i][j][0]
+                pose[1, i] = all_peaks[i][j][1]
+                pose[2, i] = all_peaks[i][j][2]
     
     vis_name = os.path.join(save_path, os.path.basename(test_image) + '_vis.png')
     scipy.misc.imsave(vis_name, canvas[:,:,[2,1,0]])
