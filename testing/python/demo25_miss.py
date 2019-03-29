@@ -17,6 +17,7 @@ import util
 import copy
 import csv
 import matplotlib
+import pandas as pd
 #get_ipython().magic(u'matplotlib inline')
 import pylab as plt
 
@@ -36,7 +37,10 @@ bad_pose_csv = os.path.join('/home/hmhm/Pose/MuVS_ori/Data/cuhk03/detected', 'ba
 if not os.path.exists(save_path):
     os.mkdir(save_path)
 
-image_list = sorted(glob.glob(os.path.join(folder_name, '0011_09*' + folder_image_suffix)))
+img_df = pd.read_csv('/home/hmhm/Pose/MuVS_ori/Data/cuhk03/detected/3d_miss_v1.csv', header=None)
+image_list = img_df[0].tolist()
+
+# image_list = sorted(glob.glob(os.path.join(folder_name, '*' + folder_image_suffix)))
 
 #%%
 
@@ -486,7 +490,7 @@ for test_image in image_list:
             idx_sub1 = idx_subset[subset[1][0:25]!=-1]
             idx_sub0 = idx_subset[subset[0][0:25]!=-1]
             idx_intersect = np.intersect1d(idx_sub0, idx_sub1)
-            if len(idx_intersect) < 2:
+            if len(idx_intersect) < 3:
                 subset_new = -1 * np.ones((1,27))
                 subset_new[0][idx_sub0] = subset[0][idx_sub0]
                 subset_new[0][idx_sub1] = subset[1][idx_sub1]
